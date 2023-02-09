@@ -12,11 +12,12 @@ for each in [mainWindow]:
     reload(each)
 
 
-class mayaWindow_sample(MayaQWidgetDockableMixin, QMainWindow):
-    def __init__(self, title='SampleWindow', menubarDic={}, statusBar='', widget='',
-                 x=0, y=0, width=10, height=10):
-        super(mayaWindow_sample, self).__init__()
+class mayaWindow_sample(MayaQWidgetDockableMixin, mainWindow.SAMPLE_QMainWindow):
+    def __init__(self, title='Maya Window'):
+        super(mayaWindow_sample, self).__init__(title=title)
+        
 
+        '''
 
         #SET WINDOW TITLE
         self.setWindowTitle(title)
@@ -34,7 +35,7 @@ class mayaWindow_sample(MayaQWidgetDockableMixin, QMainWindow):
 
         #UPDATE
         self.update()
-
+        '''
 
     def update(self):
         '''
