@@ -99,7 +99,9 @@ class CFXWINDOW:
         cfx_help_widget_ = self.cfx_help_widget_class.widget()
         cfx_rigfx_widget_ = self.cfx_help_widget_class.widget()
         cfx_setting_widget_ = self.cfx_setting_widget_class.widget()
-        cfx_side_main_widget_ = self.cfx_side_main_widget.widget()
+        cfx_side_main_widget_ = self.cfx_side_main_widget.widget(rig_fx_widget=cfx_rigfx_widget_,
+                                                                 setting_widget=cfx_setting_widget_,
+                                                                 help_widget=cfx_help_widget_)
 
         widget = self.sample_widget_template.widget_def()
         verticalLayout = self.sample_widget_template.vertical_layout(parent_self=widget)

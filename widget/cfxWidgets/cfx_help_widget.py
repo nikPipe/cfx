@@ -23,7 +23,7 @@ class CFX_HELP_WIDGET:
 
         verticalLayout = self.sample_widget_template.vertical_layout(parent_self=widget)
 
-        button = self.sample_widget_template.pushButton(set_text='Test')
+        button = self.sample_widget_template.pushButton(set_text='Help Test')
         verticalLayout.addWidget(button)
 
 

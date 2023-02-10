@@ -3,11 +3,6 @@ from widget.sample import sample_widget_template
 for each in [sample_widget_template]:
     reload(each)
 
-
-
-
-
-
 class CFX_RIGFX_WIDGET:
 
     def __init__(self):
@@ -23,7 +18,7 @@ class CFX_RIGFX_WIDGET:
 
         verticalLayout = self.sample_widget_template.vertical_layout(parent_self=widget)
 
-        button = self.sample_widget_template.pushButton(set_text='Test')
+        button = self.sample_widget_template.pushButton(set_text='Rigx Test')
         verticalLayout.addWidget(button)
 
 
