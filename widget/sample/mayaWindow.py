@@ -15,27 +15,6 @@ for each in [mainWindow]:
 class mayaWindow_sample(MayaQWidgetDockableMixin, mainWindow.SAMPLE_QMainWindow):
     def __init__(self, title='Maya Window'):
         super(mayaWindow_sample, self).__init__(title=title)
-        
-
-        '''
-
-        #SET WINDOW TITLE
-        self.setWindowTitle(title)
-
-        #SET WINDOW WIDGET
-        if widget != '':
-            self.setCentralWidget(widget)
-
-
-        self.setGeometry(x, y, width, height)
-
-
-        #SET STATUS BAR
-        self.statusBar().showMessage(statusBar)
-
-        #UPDATE
-        self.update()
-        '''
 
     def update(self):
         '''
@@ -43,8 +22,6 @@ class mayaWindow_sample(MayaQWidgetDockableMixin, mainWindow.SAMPLE_QMainWindow)
         :return:
         '''
         self.setUserData()
-
-
 
     def setUserData(self):
         '''

@@ -5,10 +5,11 @@ from collections import OrderedDict
 
 from widget.sample import mainWindow
 from widget.sample import sample_widget_template
-from widget.cfxWidgets import cfx_help_widget, cfx_rigfx_widget, cfx_setting_widget, cfx_side_main_widget
+from widget.cfxWidgets import cfx_help_widget, cfx_rigfx_widget, cfx_setting_widget, cfx_side_main_widget, cfx_shelf_widget, save_data
 
 
-for each in [mainWindow, sample_widget_template, cfx_help_widget, cfx_rigfx_widget, cfx_setting_widget, cfx_side_main_widget]:
+for each in [mainWindow, sample_widget_template, cfx_help_widget, cfx_rigfx_widget, cfx_setting_widget, cfx_side_main_widget,
+             cfx_shelf_widget, save_data]:
     reload(each)
 
 import platform
@@ -18,14 +19,37 @@ class CFXWINDOW:
     def __init__(self):
         self.sample_widget_template = sample_widget_template.SAMPLE_WIDGET_TEMPLATE()
 
-        self.cfx_help_widget_class = cfx_help_widget.CFX_HELP_WIDGET()
+        self.cfx_help_widget_class = cfx_help_widget.CFX_HELP_WIDGET(self)
         self.cfx_rigfx_widget_class = cfx_rigfx_widget.CFX_RIGFX_WIDGET()
         self.cfx_setting_widget_class = cfx_setting_widget.CFX_SETTING_WIDGET()
-        self.cfx_side_main_widget = cfx_side_main_widget.CFX_SIDE_MAIN_WIDGET()
+        self.cfx_side_main_widget = cfx_side_main_widget.CFX_SIDE_MAIN_WIDGET(rig_fx_widget=self.cfx_rigfx_widget_class,
+                                                                              setting_widget= self.cfx_setting_widget_class,
+                                                                              help_widget=self.cfx_help_widget_class)
+        self.cfx_shelf_widget = cfx_shelf_widget.CFX_SHELF_WIDGET()
+        self.save_data_class = save_data.SAVE_DATA(self)
+
+
 
         self.window_name = 'CFX'
-        self.width = 500
-        self.height = 800
+        self.width, self.height = self.save_data_class.get_size_from_jsonFile()
+        self.left_side = 'Left'
+        self.right_side = 'Right'
+        self.top_side = 'Top'
+        self.bottom_side = 'Bottom'
+
+    def update_def(self):
+        '''
+
+        :return:
+        '''
+        print('this is updating')
+        width = self.mainWindow.frameGeometry().width()
+        height = self.mainWindow.frameGeometry().height()
+        self.save_data_class.write_data()
+
+
+
+
 
     def cfx_window_(self):
 
@@ -33,10 +57,10 @@ class CFXWINDOW:
         menuDic = OrderedDict([
 
         ])
-        self.mainWindow = ''
 
         if "maya" in sys.executable.lower():
             from widget.sample import mayaWindow
+            reload(mayaWindow)
             self.mainWindow = mayaWindow.mayaWindow_sample()
             self.setWindow_detail(self.mainWindow)
             self.mainWindow.setCentralWidget(self.widget_def(window=self.mainWindow))
@@ -50,17 +74,43 @@ class CFXWINDOW:
 
         elif "blender" in sys.executable.lower():
             print("This script is running in Blender")
+
         elif "3dsmax" in platform.system().lower():
             print("This script is running in 3ds Max")
+
         elif "unity" in sys.executable.lower():
             print("This script is running in Unity")
+
         else:
             print("This script is running in an unknown 3D software environment")
-
 
         if self.mainWindow:
             self.setWindow_detail(self.mainWindow)
 
+    def dockWidget(self, widget, side='Left', name='Dockable'):
+        '''
+
+        :return:
+        '''
+        dockWidget = QDockWidget(name, self.mainWindow)
+        dockWidget.setWidget(widget)
+
+        if side.lower() == self.left_side.lower():
+            side_val = Qt.LeftDockWidgetArea
+
+        elif side.lower() == self.right_side.lower():
+            side_val = Qt.RightDockWidgetArea
+
+        elif side.lower() == self.top_side.lower():
+            side_val = Qt.TopDockWidgetArea
+
+        elif side.lower() == self.bottom_side.lower():
+            side_val = Qt.BottomDockWidgetArea
+
+        else:
+            side_val = Qt.LeftDockWidgetArea
+
+        self.mainWindow.addDockWidget(side_val, dockWidget)
 
     def getUserData(self):
         '''
@@ -87,30 +137,34 @@ class CFXWINDOW:
         window.resize(self.width, self.height)
 
 
-
-
-
-
     def widget_def(self, window):
         '''
 
         :return:
         '''
-        cfx_help_widget_ = self.cfx_help_widget_class.widget()
-        cfx_rigfx_widget_ = self.cfx_help_widget_class.widget()
-        cfx_setting_widget_ = self.cfx_setting_widget_class.widget()
-        cfx_side_main_widget_ = self.cfx_side_main_widget.widget(rig_fx_widget=cfx_rigfx_widget_,
-                                                                 setting_widget=cfx_setting_widget_,
-                                                                 help_widget=cfx_help_widget_)
+
+
+        #SET SIDE DOCKWIDGET
+        self.dockWidget(self.cfx_side_main_widget, name='setting')
+
+        #SHELF_WIDGET
+        self.dockWidget(widget=self.cfx_shelf_widget, side=self.top_side, name='Shelf')
 
         widget = self.sample_widget_template.widget_def()
-        verticalLayout = self.sample_widget_template.vertical_layout(parent_self=widget)
-        for each in [cfx_help_widget_, cfx_rigfx_widget_, cfx_setting_widget_, cfx_side_main_widget_]:
-            verticalLayout.addWidget(each)
+        verricalLayout = self.sample_widget_template.vertical_layout(parent_self=widget)
 
+        verricalLayout.addWidget(self.cfx_rigfx_widget_class)
 
+        verricalLayout.addWidget(self.cfx_setting_widget_class)
+        self.cfx_setting_widget_class.hide()
+
+        verricalLayout.addWidget(self.cfx_help_widget_class)
+        self.cfx_help_widget_class.hide()
 
         return widget
+
+
+
 
     def create_cfxSetup_widget(self):
         '''

@@ -4,22 +4,12 @@ for each in [sample_widget_template]:
     reload(each)
 
 
-
-
-
-
-class CFX_HELP_WIDGET(QWidget):
-
-    def __init__(self, parent):
-        super(CFX_HELP_WIDGET, self).__init__()
+class CFX_SHELF_WIDGET(QWidget):
+    def __init__(self):
+        super(CFX_SHELF_WIDGET, self).__init__()
         self.sample_widget_template = sample_widget_template.SAMPLE_WIDGET_TEMPLATE()
-        self.parent_self = parent
-
 
         self.initUI()
-
-
-
 
     def initUI(self):
         '''
@@ -29,12 +19,5 @@ class CFX_HELP_WIDGET(QWidget):
 
         verticalLayout = self.sample_widget_template.vertical_layout(parent_self=self)
 
-        button = self.sample_widget_template.pushButton(set_text='Help Test',
-                                                        connect=self.parent_self.update_def)
+        button = self.sample_widget_template.pushButton(set_text='Test')
         verticalLayout.addWidget(button)
-
-
-
-
-
-

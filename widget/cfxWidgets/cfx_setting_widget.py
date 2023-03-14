@@ -8,23 +8,24 @@ for each in [sample_widget_template]:
 
 
 
-class CFX_SETTING_WIDGET:
+class CFX_SETTING_WIDGET(QWidget):
 
     def __init__(self):
+        super(CFX_SETTING_WIDGET, self).__init__()
         self.sample_widget_template = sample_widget_template.SAMPLE_WIDGET_TEMPLATE()
 
+        self.initUI()
 
-    def widget(self):
+
+    def initUI(self):
         '''
 
         :return:
         '''
-        widget = self.sample_widget_template.widget_def()
 
-        verticalLayout = self.sample_widget_template.vertical_layout(parent_self=widget)
+        verticalLayout = self.sample_widget_template.vertical_layout(parent_self=self)
 
         button = self.sample_widget_template.pushButton(set_text='Setting Test')
         verticalLayout.addWidget(button)
 
 
-        return widget

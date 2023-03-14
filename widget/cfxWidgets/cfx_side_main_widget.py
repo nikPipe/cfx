@@ -8,13 +8,16 @@ for each in [sample_widget_template]:
 
 
 
-class CFX_SIDE_MAIN_WIDGET:
+class CFX_SIDE_MAIN_WIDGET(QWidget):
 
-    def __init__(self):
+    def __init__(self, rig_fx_widget, setting_widget, help_widget):
+        super(CFX_SIDE_MAIN_WIDGET, self).__init__()
         self.sample_widget_template = sample_widget_template.SAMPLE_WIDGET_TEMPLATE()
 
+        self.initUI(rig_fx_widget, setting_widget, help_widget)
 
-    def widget(self, rig_fx_widget, setting_widget, help_widget):
+
+    def initUI(self, rig_fx_widget, setting_widget, help_widget):
         '''
 
         :return:
@@ -24,22 +27,21 @@ class CFX_SIDE_MAIN_WIDGET:
         self.help_widget = help_widget
 
 
-        widget = self.sample_widget_template.widget_def()
 
 
-        verticalLayout = self.sample_widget_template.vertical_layout(parent_self=widget)
+        verticalLayout = self.sample_widget_template.vertical_layout(parent_self=self)
 
-        button = self.sample_widget_template.pushButton(set_text='Rigfx', connect=self.rig_fx_def)
+        button = self.sample_widget_template.pushButton(set_text='Rigfx', connect=self.rig_fx_def, set_status='Rigfx Button',
+                                                        set_tool_tip='Rigfx')
         verticalLayout.addWidget(button)
 
-        button = self.sample_widget_template.pushButton(set_text='setting', connect=self.setting_def)
+        button = self.sample_widget_template.pushButton(set_text='setting', connect=self.setting_def, set_status='Setting')
         verticalLayout.addWidget(button)
 
-        button = self.sample_widget_template.pushButton(set_text='help', connect=self.help_def)
+        button = self.sample_widget_template.pushButton(set_text='help', connect=self.help_def, set_status='Help')
         verticalLayout.addWidget(button)
 
 
-        return widget
 
     def rig_fx_def(self):
         '''
